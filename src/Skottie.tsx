@@ -69,9 +69,14 @@ const LOTTIE_JSON = {
 const SIZE = 256;
 
 const Skottie = () => {
-  const animation = useMemo(() => Skia.Skottie.Make(JSON.stringify(LOTTIE_JSON))!, []);
-  const totalFrames = animation.duration() * animation.fps();
-  const durationMs = animation.duration() * 1000;
+  const { animation, totalFrames, durationMs } = useMemo(() => {
+    const anim = Skia.Skottie.Make(JSON.stringify(LOTTIE_JSON))!;
+    return {
+      animation: anim,
+      totalFrames: anim.duration() * anim.fps(),
+      durationMs: anim.duration() * 1000,
+    };
+  }, []);
 
   const frame = useSharedValue(0);
   useEffect(() => {

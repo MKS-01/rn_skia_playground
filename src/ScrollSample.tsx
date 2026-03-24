@@ -41,10 +41,10 @@ const ScrollSample = () => {
         horizontal
         scrollEnabled={false}
         showsHorizontalScrollIndicator={false}
-        contentContainerStyle={{ gap: CARD_GAP, paddingHorizontal: 2 }}
+        contentContainerStyle={styles.scrollContent}
       >
         {ITEMS.map((item, i) => (
-          <View key={i} style={[styles.card, { width: cardWidth, backgroundColor: item.color }]}>
+          <View key={item.label} style={[styles.card, { width: cardWidth, backgroundColor: item.color }]}>
             <Text style={styles.cardLabel}>{item.label}</Text>
             <Text style={styles.cardIndex}>{i + 1} / {ITEMS.length}</Text>
           </View>
@@ -54,7 +54,7 @@ const ScrollSample = () => {
       <View style={styles.buttons}>
         {ITEMS.map((item, i) => (
           <Pressable
-            key={i}
+            key={item.label}
             style={[styles.dot, { backgroundColor: item.color }]}
             onPress={() => scrollToIndex(i)}
           />
@@ -65,6 +65,7 @@ const ScrollSample = () => {
 };
 
 const styles = StyleSheet.create({
+  scrollContent: { gap: CARD_GAP, paddingHorizontal: 2 },
   card: {
     height: 120,
     borderRadius: 14,

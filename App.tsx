@@ -5,7 +5,7 @@
  * @format
  */
 
-import React, { useState } from 'react';
+import React, { memo, useCallback, useState } from 'react';
 import { Pressable, StatusBar, StyleSheet, Text, useColorScheme, View } from 'react-native';
 import Animated, { scrollTo, useAnimatedRef, useDerivedValue, useSharedValue, useScrollOffset } from 'react-native-reanimated';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -19,7 +19,7 @@ import ScrollSample from './src/ScrollSample';
 // ─── Floating variant toggle ──────────────────────────────────────────────────
 const LABELS = ['Skia', 'Reanimated'];
 
-function FloatingToggle({ variant, onChange }: { variant: number; onChange: (i: number) => void }) {
+const FloatingToggle = memo(function FloatingToggle({ variant, onChange }: { variant: number; onChange: (i: number) => void }) {
   const insets = useSafeAreaInsets();
   return (
     <View style={[toggle.wrap, { bottom: insets.bottom + 4 }]}>
@@ -30,7 +30,7 @@ function FloatingToggle({ variant, onChange }: { variant: number; onChange: (i: 
       ))}
     </View>
   );
-}
+});
 
 const toggle = StyleSheet.create({
   wrap: {
@@ -68,10 +68,10 @@ function App() {
     }
   });
 
-  const handleVariantChange = (i: number) => {
+  const handleVariantChange = useCallback((i: number) => {
     setVariant(i);
     scrollTrigger.value += 1;
-  };
+  }, [scrollTrigger]);
 
   return (
     <SafeAreaProvider>

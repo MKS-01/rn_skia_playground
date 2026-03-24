@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useState } from 'react';
 import { Pressable, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import Animated, {
   Easing,
@@ -18,7 +18,7 @@ const ReanimatedSample = () => {
   const trackWidth = width - 64;
   const maxTravel = trackWidth - BOX_SIZE;
 
-  const toggled = useRef(false);
+  const [toggled, setToggled] = useState(false);
   const progress = useSharedValue(0);
 
   const boxStyle = useAnimatedStyle(() => ({
@@ -33,8 +33,9 @@ const ReanimatedSample = () => {
   }));
 
   const onPress = () => {
-    toggled.current = !toggled.current;
-    progress.value = withTiming(toggled.current ? 1 : 0, {
+    const next = !toggled;
+    setToggled(next);
+    progress.value = withTiming(next ? 1 : 0, {
       duration: DURATION,
       easing: EASING,
     });
@@ -49,7 +50,7 @@ const ReanimatedSample = () => {
 
       {/* Live label */}
       <Animated.Text style={[styles.hint, labelStyle]}>
-        {toggled.current ? 'Morphed →' : '← Original'}
+        {toggled ? 'Morphed →' : '← Original'}
       </Animated.Text>
 
       {/* Property tags */}
