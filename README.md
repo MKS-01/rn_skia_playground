@@ -6,7 +6,7 @@ A playground to test [Skia](https://shopify.github.io/react-native-skia/) and an
 
 ## Preview
 
-<video src="sample/Demo.mp4" controls width="320"></video>
+![Demo](sample/Demo.gif)
 
 ---
 
