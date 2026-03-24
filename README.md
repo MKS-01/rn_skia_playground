@@ -2,7 +2,8 @@
 
 A playground to test [Skia](https://shopify.github.io/react-native-skia/) and animations using [React Native Reanimated](https://docs.swmansion.com/react-native-reanimated/).
 
-> Built using [Claude](https://claude.ai)
+
+**Tested on React Native `0.84.1`** · Skia `^2.5.3` · Reanimated `^4.2.3`
 
 ---
 
@@ -38,15 +39,7 @@ A playground to test [Skia](https://shopify.github.io/react-native-skia/) and an
 </table>
 </details>
 
----
 
-## Tech Stack
-
-| Library | Version |
-|---|---|
-| React Native | 0.76 |
-| @shopify/react-native-skia | latest |
-| react-native-reanimated | latest |
 
 ---
 
