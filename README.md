@@ -2,11 +2,7 @@
 
 A playground to test [Skia](https://shopify.github.io/react-native-skia/) and animations using [React Native Reanimated](https://docs.swmansion.com/react-native-reanimated/).
 
----
-
-## Preview
-
-[![Demo](sample/Demo.gif)](https://github.com/MKS-01/rn_skia_playground/raw/main/sample/Demo.mp4)
+> Built using [Claude](https://claude.ai)
 
 ---
 
