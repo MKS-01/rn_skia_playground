@@ -7,7 +7,7 @@
 
 import React, { useState } from 'react';
 import { Pressable, StatusBar, StyleSheet, Text, useColorScheme, View } from 'react-native';
-import Animated, { scrollTo, useAnimatedRef, useDerivedValue, useSharedValue, useScrollViewOffset } from 'react-native-reanimated';
+import Animated, { scrollTo, useAnimatedRef, useDerivedValue, useSharedValue, useScrollOffset } from 'react-native-reanimated';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animations from './src/Animations';
 import Skottie from './src/Skottie';
@@ -60,7 +60,7 @@ function App() {
 
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
   const scrollTrigger = useSharedValue(0);
-  const scrollOffset = useScrollViewOffset(scrollRef);
+  const scrollOffset = useScrollOffset(scrollRef);
 
   useDerivedValue(() => {
     if (scrollTrigger.value > 0) {

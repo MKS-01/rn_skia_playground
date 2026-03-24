@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 import {
+  Linking,
   Platform,
   Pressable,
   StyleSheet,
@@ -178,12 +179,18 @@ const HeroScreen = ({ activeVariant, scrollOffset }: HeroScreenProps) => {
   });
 
   // ── Scroll-driven effects ──────────────────────────────────────────────────
+  // Container zooms out, background zooms in — creates depth on scroll
   const heroWrapStyle = useAnimatedStyle(() => ({
     transform: [{
-      scale: interpolate(scrollOffset.value, [0, heroH], [1, 0.94], Extrapolation.CLAMP),
+      scale: interpolate(scrollOffset.value, [0, heroH], [1, 0.93], Extrapolation.CLAMP),
     }],
-    borderRadius: interpolate(scrollOffset.value, [0, heroH * 0.5], [0, 20], Extrapolation.CLAMP),
-    overflow: 'hidden' as const,
+  }));
+
+  const bgZoomStyle = useAnimatedStyle(() => ({
+    position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
+    transform: [{
+      scale: interpolate(scrollOffset.value, [0, heroH], [1, 1.18], Extrapolation.CLAMP),
+    }],
   }));
 
   const overlayStyle = useAnimatedStyle(() => ({
@@ -241,9 +248,11 @@ const HeroScreen = ({ activeVariant, scrollOffset }: HeroScreenProps) => {
     <View style={styles.screen}>
       {/* ── Hero ── */}
       <Animated.View style={[styles.hero, { height: heroH }, heroWrapStyle]}>
-        <Canvas style={StyleSheet.absoluteFill}>
-          <Vertices vertices={vertices} colors={colors} indices={indices} />
-        </Canvas>
+        <Animated.View style={bgZoomStyle}>
+          <Canvas style={StyleSheet.absoluteFill}>
+            <Vertices vertices={vertices} colors={colors} indices={indices} />
+          </Canvas>
+        </Animated.View>
         <Animated.View style={overlayStyle} pointerEvents="none" />
 
         {/* Top bar */}
@@ -284,6 +293,10 @@ const HeroScreen = ({ activeVariant, scrollOffset }: HeroScreenProps) => {
               style={styles.ctaInner}
               onPressIn={() => { ctaScale.value = withSpring(0.9, { damping: 12 }); }}
               onPressOut={() => { ctaScale.value = withSpring(1, { damping: 8, stiffness: 180 }); }}
+              onPress={() => Linking.openURL(activeVariant === 0
+                ? 'https://shopify.github.io/react-native-skia/'
+                : 'https://docs.swmansion.com/react-native-reanimated/'
+              )}
             >
               <Text style={styles.ctaText}>
                 {activeVariant === 0 ? 'Explore Skia' : 'Explore Reanimated'}
