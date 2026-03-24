@@ -6,13 +6,13 @@ A playground to test [Skia](https://shopify.github.io/react-native-skia/) and an
 
 ## Preview
 
-<video src="sample/Screen Recording 2026-03-24 at 8.57.08 AM.mov" controls width="320"></video>
+<video src="sample/Demo.mp4" controls width="320"></video>
 
 ---
 
 ## Screenshots
 
-<details>
+<details open>
 <summary>iOS</summary>
 
 <br>
