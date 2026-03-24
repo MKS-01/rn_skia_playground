@@ -9,10 +9,8 @@ A playground to test [Skia](https://shopify.github.io/react-native-skia/) and an
 ## Screenshots
 
 <details open>
-<summary>iOS</summary>
-
+<summary><strong>iOS</strong></summary>
 <br>
-
 <table>
   <tr>
     <td><img src="sample/ss1.png" width="220"/></td>
@@ -23,14 +21,11 @@ A playground to test [Skia](https://shopify.github.io/react-native-skia/) and an
     <td><img src="sample/ss4.png" width="220"/></td>
   </tr>
 </table>
-
 </details>
 
 <details>
-<summary>Android</summary>
-
+<summary><strong>Android</strong></summary>
 <br>
-
 <table>
   <tr>
     <td><img src="sample/android1.png" width="220"/></td>
@@ -41,64 +36,57 @@ A playground to test [Skia](https://shopify.github.io/react-native-skia/) and an
     <td><img src="sample/android4.png" width="220"/></td>
   </tr>
 </table>
-
 </details>
+
+---
+
+## Tech Stack
+
+| Library | Version |
+|---|---|
+| React Native | 0.76 |
+| @shopify/react-native-skia | latest |
+| react-native-reanimated | latest |
 
 ---
 
 ## Getting Started
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+> **Note**: Complete the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
 
-### Step 1: Start Metro
+### 1. Install dependencies
 
 ```sh
-# Using npm
+npm install
+```
+
+For iOS:
+
+```sh
+bundle install && bundle exec pod install
+```
+
+### 2. Start Metro
+
+```sh
 npm start
-
-# OR using Yarn
-yarn start
 ```
 
-### Step 2: Build and run your app
-
-#### Android
+### 3. Run the app
 
 ```sh
+# Android
 npm run android
-# OR
-yarn android
-```
 
-#### iOS
-
-Install CocoaPods dependencies (first clone or after updating native deps):
-
-```sh
-bundle install
-bundle exec pod install
-```
-
-Then run:
-
-```sh
+# iOS
 npm run ios
-# OR
-yarn ios
 ```
-
-### Step 3: Modify your app
-
-Open `App.tsx` and make changes. The app will auto-update via [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
 
 ---
 
-## Troubleshooting
+## Resources
 
-See the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-## Learn More
-
-- [React Native docs](https://reactnative.dev/docs/getting-started)
 - [React Native Skia](https://shopify.github.io/react-native-skia/)
 - [React Native Reanimated](https://docs.swmansion.com/react-native-reanimated/)
+- [React Native docs](https://reactnative.dev/docs/getting-started)
+- [Troubleshooting](https://reactnative.dev/docs/troubleshooting)
