@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { Canvas, Skia, Skottie as SkottieView } from '@shopify/react-native-skia';
 import { useSharedValue, withRepeat, withTiming } from 'react-native-reanimated';
 
@@ -79,18 +79,13 @@ const Skottie = () => {
   }, [frame, totalFrames, durationMs]);
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Skottie (Lottie via Skia)</Text>
-      <Canvas style={styles.canvas}>
-        <SkottieView animation={animation} frame={frame} />
-      </Canvas>
-    </View>
+    <Canvas style={styles.canvas}>
+      <SkottieView animation={animation} frame={frame} />
+    </Canvas>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { marginVertical: 8 },
-  title: { fontSize: 15, fontWeight: '700', paddingHorizontal: 16, marginBottom: 4 },
   canvas: { width: SIZE, height: SIZE, alignSelf: 'center' },
 });
 

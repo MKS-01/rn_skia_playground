@@ -6,12 +6,15 @@
  */
 
 import React, { useState } from 'react';
-import { Pressable, ScrollView, StatusBar, StyleSheet, Text, useColorScheme, View } from 'react-native';
+import { Pressable, StatusBar, StyleSheet, Text, useColorScheme, View } from 'react-native';
+import Animated, { scrollTo, useAnimatedRef, useDerivedValue, useSharedValue, useScrollViewOffset } from 'react-native-reanimated';
 import { SafeAreaProvider, useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animations from './src/Animations';
 import Skottie from './src/Skottie';
 import HeroScreen from './src/HeroScreen';
-import ImageSample from './src/ImageSample';
+import SectionCard from './src/SectionCard';
+import ReanimatedSample from './src/ReanimatedSample';
+import ScrollSample from './src/ScrollSample';
 
 // ─── Floating variant toggle ──────────────────────────────────────────────────
 const LABELS = ['Skia', 'Reanimated'];
@@ -19,7 +22,7 @@ const LABELS = ['Skia', 'Reanimated'];
 function FloatingToggle({ variant, onChange }: { variant: number; onChange: (i: number) => void }) {
   const insets = useSafeAreaInsets();
   return (
-    <View style={[toggle.wrap, { bottom: insets.bottom + 16 }]}>
+    <View style={[toggle.wrap, { bottom: insets.bottom + 4 }]}>
       {LABELS.map((label, i) => (
         <Pressable key={label} onPress={() => onChange(i)} style={[toggle.tab, variant === i && toggle.active]}>
           <Text style={[toggle.text, variant === i && toggle.activeText]}>{label}</Text>
@@ -55,18 +58,50 @@ function App() {
   const isDarkMode = useColorScheme() === 'dark';
   const [variant, setVariant] = useState(0);
 
+  const scrollRef = useAnimatedRef<Animated.ScrollView>();
+  const scrollTrigger = useSharedValue(0);
+  const scrollOffset = useScrollViewOffset(scrollRef);
+
+  useDerivedValue(() => {
+    if (scrollTrigger.value > 0) {
+      scrollTo(scrollRef, 0, 0, true);
+    }
+  });
+
+  const handleVariantChange = (i: number) => {
+    setVariant(i);
+    scrollTrigger.value += 1;
+  };
+
   return (
     <SafeAreaProvider>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <View style={styles.root}>
-        <ScrollView contentContainerStyle={styles.scroll}>
-          <HeroScreen activeVariant={variant} />
-          <Animations />
-          <Skottie />
+        <Animated.ScrollView ref={scrollRef} contentContainerStyle={styles.scroll}>
+          <HeroScreen activeVariant={variant} scrollOffset={scrollOffset} />
+          {variant === 0 ? (
+            <>
+              <SectionCard title="Skia Animations" description="Hardware-accelerated canvas animations">
+                <Animations />
+              </SectionCard>
+              <SectionCard title="Skottie" description="Lottie animations rendered via Skia">
+                <Skottie />
+              </SectionCard>
+            </>
+          ) : (
+            <>
+              <SectionCard title="withTiming" description="Animates translateX, borderRadius & color simultaneously">
+                <ReanimatedSample />
+              </SectionCard>
+              <SectionCard title="scrollTo" description="Programmatic animated scroll via UI thread">
+                <ScrollSample />
+              </SectionCard>
+            </>
+          )}
 
           <View style={styles.bottomPad} />
-        </ScrollView>
-        <FloatingToggle variant={variant} onChange={setVariant} />
+        </Animated.ScrollView>
+        <FloatingToggle variant={variant} onChange={handleVariantChange} />
       </View>
     </SafeAreaProvider>
   );

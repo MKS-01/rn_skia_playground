@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { Canvas, Circle, interpolateColors } from '@shopify/react-native-skia';
 import {
   Easing,
@@ -42,23 +42,18 @@ const Animations = () => {
   );
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Skia Animations</Text>
-      <Canvas style={styles.canvas}>
-        {/* Bouncing ball */}
-        <Circle cx={75} cy={cy} r={25} color="#06B6D4" />
-        {/* Pulsing circle */}
-        <Circle cx={150} cy={150} r={r} color="#F97316" />
-        {/* Color-cycling circle */}
-        <Circle cx={240} cy={150} r={35} color={color} />
-      </Canvas>
-    </View>
+    <Canvas style={styles.canvas}>
+      {/* Bouncing ball */}
+      <Circle cx={75} cy={cy} r={25} color="#06B6D4" />
+      {/* Pulsing circle */}
+      <Circle cx={150} cy={150} r={r} color="#F97316" />
+      {/* Color-cycling circle */}
+      <Circle cx={240} cy={150} r={35} color={color} />
+    </Canvas>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { marginVertical: 8 },
-  title: { fontSize: 15, fontWeight: '700', paddingHorizontal: 16, marginBottom: 4 },
   canvas: { width: SIZE, height: SIZE, alignSelf: 'center' },
 });
 

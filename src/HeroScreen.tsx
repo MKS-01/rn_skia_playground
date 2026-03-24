@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 import {
+  Platform,
   Pressable,
   StyleSheet,
   Text,
@@ -8,7 +9,10 @@ import {
 } from 'react-native';
 import { Canvas, Vertices, vec } from '@shopify/react-native-skia';
 import Animated, {
+  Extrapolation,
+  interpolate,
   interpolateColor,
+  type SharedValue,
   useAnimatedStyle,
   useDerivedValue,
   useFrameCallback,
@@ -97,11 +101,12 @@ function bilinear(
 // ─── Main screen ──────────────────────────────────────────────────────────────
 interface HeroScreenProps {
   activeVariant: number;
+  scrollOffset: SharedValue<number>;
 }
 
-const HeroScreen = ({ activeVariant }: HeroScreenProps) => {
+const HeroScreen = ({ activeVariant, scrollOffset }: HeroScreenProps) => {
   const { width, height } = useWindowDimensions();
-  const heroH = height * 0.62;
+  const heroH = height * 0.48;
 
   const variantAnim = useSharedValue(0);
 
@@ -172,6 +177,36 @@ const HeroScreen = ({ activeVariant }: HeroScreenProps) => {
     return result;
   });
 
+  // ── Scroll-driven effects ──────────────────────────────────────────────────
+  const heroWrapStyle = useAnimatedStyle(() => ({
+    transform: [{
+      scale: interpolate(scrollOffset.value, [0, heroH], [1, 0.94], Extrapolation.CLAMP),
+    }],
+    borderRadius: interpolate(scrollOffset.value, [0, heroH * 0.5], [0, 20], Extrapolation.CLAMP),
+    overflow: 'hidden' as const,
+  }));
+
+  const overlayStyle = useAnimatedStyle(() => ({
+    position: 'absolute',
+    top: 0, left: 0, right: 0, bottom: 0,
+    backgroundColor: '#fff',
+    opacity: interpolate(scrollOffset.value, [0, heroH * 0.6], [0, 0.45], Extrapolation.CLAMP),
+  }));
+
+  const contentScrollStyle = useAnimatedStyle(() => ({
+    opacity: interpolate(scrollOffset.value, [0, heroH * 0.45], [1, 0], Extrapolation.CLAMP),
+    transform: [{
+      translateY: interpolate(scrollOffset.value, [0, heroH * 0.45], [0, -28], Extrapolation.CLAMP),
+    }],
+  }));
+
+  const topBarScrollStyle = useAnimatedStyle(() => ({
+    opacity: interpolate(scrollOffset.value, [0, heroH * 0.35], [1, 0.2], Extrapolation.CLAMP),
+    transform: [{
+      translateY: interpolate(scrollOffset.value, [0, heroH * 0.35], [0, -12], Extrapolation.CLAMP),
+    }],
+  }));
+
   // CTA button color + bounce
   const ctaScale = useSharedValue(1);
   const ctaScaleStyle = useAnimatedStyle(() => ({
@@ -205,13 +240,14 @@ const HeroScreen = ({ activeVariant }: HeroScreenProps) => {
   return (
     <View style={styles.screen}>
       {/* ── Hero ── */}
-      <View style={[styles.hero, { height: heroH }]}>
+      <Animated.View style={[styles.hero, { height: heroH }, heroWrapStyle]}>
         <Canvas style={StyleSheet.absoluteFill}>
           <Vertices vertices={vertices} colors={colors} indices={indices} />
         </Canvas>
+        <Animated.View style={overlayStyle} pointerEvents="none" />
 
         {/* Top bar */}
-        <View style={styles.topBar}>
+        <Animated.View style={[styles.topBar, topBarScrollStyle]}>
           <Text style={styles.appName}>
             {activeVariant === 0 ? 'Skia' : 'Reanimated'}
           </Text>
@@ -221,10 +257,10 @@ const HeroScreen = ({ activeVariant }: HeroScreenProps) => {
               {activeVariant === 0 ? 'GPU Powered' : 'UI Thread'}
             </Text>
           </View>
-        </View>
+        </Animated.View>
 
         {/* Hero content */}
-        <View style={styles.heroContent}>
+        <Animated.View style={[styles.heroContent, contentScrollStyle]}>
           <Animated.Text style={[styles.eyebrow, eyebrowStyle]}>
             REACT NATIVE REANIMATED
           </Animated.Text>
@@ -254,8 +290,8 @@ const HeroScreen = ({ activeVariant }: HeroScreenProps) => {
               </Text>
             </Pressable>
           </Animated.View>
-        </View>
-      </View>
+        </Animated.View>
+      </Animated.View>
 
       {/* ── Peeking card ── */}
       <View style={styles.card}>
@@ -282,7 +318,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 20,
-    paddingTop: 52,
+    paddingTop: 68,
   },
   appName: { fontSize: 26, fontWeight: '700', color: '#1C1C1E' },
   badge: {
@@ -340,10 +376,18 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 16,
     padding: 16,
-    shadowColor: '#000',
-    shadowOpacity: 0.06,
-    shadowRadius: 8,
-    elevation: 3,
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOpacity: 0.06,
+        shadowRadius: 8,
+        shadowOffset: { width: 0, height: 2 },
+      },
+      android: {
+        borderWidth: 1,
+        borderColor: '#E5E7EB',
+      },
+    }),
   },
   cardLabel: { fontSize: 10, fontWeight: '700', letterSpacing: 1.2, color: '#9CA3AF' },
   cardHint: { fontSize: 14, fontWeight: '500', color: '#111827', marginTop: 4 },
