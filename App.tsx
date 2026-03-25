@@ -15,6 +15,10 @@ import HeroScreen from './src/HeroScreen';
 import SectionCard from './src/SectionCard';
 import ReanimatedSample from './src/ReanimatedSample';
 import ScrollSample from './src/ScrollSample';
+import CSSAnimationSample from './src/CSSAnimationSample';
+import SpringPhysicsSample from './src/SpringPhysicsSample';
+import StaggerSample from './src/StaggerSample';
+import InterpolateSample from './src/InterpolateSample';
 
 // ─── Floating variant toggle ──────────────────────────────────────────────────
 const LABELS = ['Skia', 'Reanimated'];
@@ -95,6 +99,18 @@ function App() {
               </SectionCard>
               <SectionCard title="scrollTo" description="Programmatic animated scroll via UI thread">
                 <ScrollSample />
+              </SectionCard>
+              <SectionCard title="CSS Animations" description="Keyframe animations without hooks — new in v4.3">
+                <CSSAnimationSample />
+              </SectionCard>
+              <SectionCard title="Spring Physics" description="Press and hold — three spring configs compared side by side">
+                <SpringPhysicsSample />
+              </SectionCard>
+              <SectionCard title="Stagger Entry" description="Layout entering animations chained with delay and spring">
+                <StaggerSample />
+              </SectionCard>
+              <SectionCard title="Interpolation" description="One shared value drives colour, scale, rotation and position simultaneously">
+                <InterpolateSample />
               </SectionCard>
             </>
           )}
